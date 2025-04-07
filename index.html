@@ -1,11 +1,111 @@
-<!DOCTYPE html>
-<html lang="pl">
+<!DOCTYPE html><html lang="pl">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wygraj Auto!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background: #1a1a1a;
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    main {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background: #e60023;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #c1001d;
+    }
+    .result {
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <h1>Wygraj samochód!</h1>
-  <p>Kup los za 1 zł i spełnij marzenie. Losowanie po sprzedaży 10 000 losów.</p>
-</body>
+  <header>
+    <h1>Wygraj samochód!</h1>
+    <p>Kup los za 1 zł i weź udział w loterii</p>
+  </header>  <main>
+    <h2>Krok 1: Wybierz ilość losów</h2>
+    <label for="email">Twój e-mail</label>
+    <input type="email" id="email" placeholder="np. jan.kowalski@gmail.com" required><label for="quantity">Ilość losów</label>
+<input type="number" id="quantity" min="1" value="1">
+
+<div class="result">
+  Do zapłaty: <span id="total">1</span> zł
+</div>
+
+<button onclick="goToPayment()">Kup losy przez Revolut</button>
+
+<h2>Krok 2: Potwierdź płatność</h2>
+<label for="transaction">Kod transakcji Revolut</label>
+<input type="text" id="transaction" placeholder="np. 5GHTS983">
+
+<button onclick="confirmPayment()">Wyślij potwierdzenie</button>
+
+  </main>  <script>
+    const quantityInput = document.getElementById('quantity');
+    const totalDisplay = document.getElementById('total');
+
+    quantityInput.addEventListener('input', () => {
+      const value = parseInt(quantityInput.value) || 1;
+      totalDisplay.textContent = value;
+    });
+
+    function goToPayment() {
+      const qty = parseInt(document.getElementById('quantity').value);
+      const email = document.getElementById('email').value;
+      if (!email || qty < 1) {
+        alert("Wprowadź poprawny e-mail i ilość losów.");
+        return;
+      }
+      const amount = qty;
+      const revolutLink = `https://revolut.me/s96krystian/${amount}pln`;
+      window.open(revolutLink, '_blank');
+    }
+
+    function confirmPayment() {
+      const email = document.getElementById('email').value;
+      const transaction = document.getElementById('transaction').value;
+      if (!email || !transaction) {
+        alert("Wprowadź e-mail oraz kod transakcji.");
+        return;
+      }
+      alert(`Dziękujemy! Twój zakup został zapisany.\nE-mail: ${email}\nTransakcja: ${transaction}`);
+    }
+  </script></body>
 </html>
